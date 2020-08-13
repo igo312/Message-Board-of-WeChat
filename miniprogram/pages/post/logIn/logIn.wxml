@@ -1,0 +1,7 @@
+<view class="container">
+    <text >\r\n</text>
+    <text class="motto">Ola!</text>
+  <view catchtap="onTapJump" class="journey-container">
+    <text class="journey">Let's begin!</text>
+  </view>
+</view>

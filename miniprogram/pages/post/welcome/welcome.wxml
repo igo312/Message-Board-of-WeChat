@@ -1,0 +1,6 @@
+<!--pages/post/welcome/welcome.wxml-->
+<view class="main">
+  <view class="hello">Ola!</view>
+  <image class="biCode" src="../../../images/biCode.jpg" bindlongtap="saveImg" />
+  <view class="txt">请关注我的公众号</view> 
+</view>

@@ -1,0 +1,38 @@
+/* pages/post/welcome/welcome.wxss */
+page{
+  background-color: #ECC0A8;
+}
+
+.main{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+}
+
+.hello{
+  margin-top: 100rpx;
+  font-size:  50rpx;
+  font-weight: bold;
+  color: #9F4311;
+}
+
+.biCode{
+  width: 400rpx;
+  height: 400rpx;
+  margin-top: 100rpx;
+}
+
+.txt{
+  margin-top: 100rpx;
+  border:  1px solid #EA5A3C;
+  width: 200rpx;
+  height: 80rpx;
+  border-radius: 5px;
+  text-align: center;
+
+  font-size: 22rpx;
+  font-weight: bold;
+  line-height: 80rpx;
+  color:  #EA5A3C;
+}

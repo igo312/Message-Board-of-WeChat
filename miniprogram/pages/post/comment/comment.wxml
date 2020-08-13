@@ -1,0 +1,76 @@
+<!--pages/comment/comment.wxml-->
+<view class="main">
+  <!--标题设置-->
+  <view class="brightnessDown" >
+  <view class="Title-Part">
+    <view class='Title'>饼子屋的烧烤摊</view>
+    <button class='comment' open-type="getUserInfo" bindgetuserinfo="onGetUserInfo" hidden="{{userStatus}}">登录</button>
+    <button class='comment' bindtap="translateYUp" hidden="{{!userStatus}}">写留言</button>
+  </view>
+
+  <!--一条评论的模版-->
+  <view class="commentPart">
+    <block wx:for="{{comments}}" wx:for-item="cm" wx:for-index="idx" wx:key="create_time">
+      <!--根节点
+          |---头像
+          |---ID、点赞数、内容
+          |  |--ID与点赞数
+          |  |  |----ID
+          |  |  |____点赞数
+          |  |__评论内容
+          -->
+      <view class="main-comment" >
+        <image class="post-avatar" mode="scaleToFill" src="{{cm.avatar}}" />
+        <view class="ID-comment">
+          <view class="IDPart">
+            <view class="post-name">{{cm.username}}</view>
+            <view wx:if="{{idx==0}}" class="top-box"> 
+              <view class="top-comment">置顶</view>
+            </view>
+            <view class="upPart">
+              <view class="login-check" hidden="{{!userStatus}}">
+                <image class="up" hidden="{{cm.upInfo.upStatus}}" src="../../../images/icon/wx_app_like.png" catchtap="setUp" data-comment-idx="{{idx}}" />
+                <image class="up" hidden="{{!cm.upInfo.upStatus}}" src="../../../images/icon/wx_app_liked.png" catchtap="setUp" data-comment-idx="{{idx}}"/>
+                <text  class="upNum">{{cm.upInfo.upNum}}</text>
+              </view>
+            </view>
+          </view>
+          <view class="post-comment">{{cm.content.txt}}</view>
+        </view>
+      </view>
+
+      <!--<view class="post-time">{{cm.formatedDate}}</view>-->
+    </block>
+  </view>
+  </view>
+ 
+  <!--mask 透明度背景，出现留言时使背景变暗-->
+  <view id="mask" class="mask" hidden="{{!postStatus}}" catchtap="translateYDown"></view>
+
+  <!--留言部分 以隐藏形式实现-->
+  <view id="upload" class="upload-comment" animation="{{animation}}">
+    <view class="upload-status">
+      <image class="upload-cancel" src="../../../images/icon/wx_app_xx.png" bindtap="translateYDown" />
+      <view class="upload-hint1" >写留言</view>
+      <view class="upload-submit" hidden="{{keyboardStatus}}">提交</view>
+      <view class="upload-submitted" hidden="{{!keyboardStatus}}" bindtap="sendMoreMsg">提交</view>
+    </view>
+    <textarea class="upload-input" placeholder="说说想吃什么，辣不辣，葱花香菜要不要" bindinput="bindCommentInput" value="{{keyboardInput}}"></textarea>
+  </view>
+</view>
+
+
+ <!--输入部分-->
+  <!--
+  <view class="input-box">
+    <view class="send-msg-box">
+      <view class='input-item'>
+        <input class="input submit-input" placeholder="说点什么吧..." value="{{keyboardInput}}" bindinput="bindCommentInput"></input>
+      </view>
+      <image hidden="{{emojiStatus}}" class="add-icon comment-icon" src="/images/icon/wx_app_emoji1.png" catchtap="getEmoji"></image>
+      <image hidden="{{!emojiStatus}}" class="add-icon comment-icon" src="/images/icon/wx_app_keyboard.png" catchtap="getKeyboard"></image>
+      <image class="add-icon comment-icon" src="/images/icon/wx_app_add.png" ></image>
+      <view class="submit-send" catchtap="sendMoreMsg">发送</view>
+    </view> 
+  </view>
+  -->

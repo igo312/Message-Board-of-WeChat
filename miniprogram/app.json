@@ -1,0 +1,15 @@
+{
+  "pages": [
+    "pages/post/welcome/welcome",
+    "pages/post/comment/comment",
+    "pages/index/index",
+    "pages/openapi/openapi"
+  ],
+  "window": {
+    "navigationBarTitleText":"欢 迎 来 到 饼 子 屋",
+    "navigationBarBackgroundColor":"#4A6141",
+    "navigationBarTextStyle":"white"
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

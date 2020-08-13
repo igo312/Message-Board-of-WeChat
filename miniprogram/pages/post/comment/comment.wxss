@@ -1,0 +1,276 @@
+/* pages/comment/comment.wxss */
+page{
+  background-color: #EAE8E8;
+}
+
+.main{
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100%;
+}
+
+
+
+.Title-Part{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-top: 40rpx;
+  padding-bottom: 20rpx;
+}
+
+.Title-Part .Title{
+  font-size: 28rpx;
+  color:#666;
+  margin-left: 20rpx;
+}
+
+.Title-Part .comment{
+  width:180rpx;
+  position: absolute;
+  font-size: 28rpx;
+  color:#4A6141;
+  right:20rpx;
+  overflow: hidden;
+  background-color: #EAE8E8;
+}
+
+.main .commentPart{
+  text-align: left;
+}
+
+.commentPart .main-comment{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  margin: 30rpx 20rpx;
+}
+
+.commentPart .post-avatar{
+  flex-shrink: 0;
+  width: 80rpx;
+  height: 80rpx;
+}
+
+.commentPart .ID-comment{
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.commentPart .IDPart{
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+}
+
+.commentPart .post-name{
+  font-size: 24rpx;
+  margin-left: 10rpx;
+  color: #666
+}
+
+.top-box{
+  width: 60rpx;
+  height: 35rpx;
+  font-size: 22rpx;
+  margin-left: 10rpx;
+  background-color: #C3C3C3;
+  color:#FFFFFF;
+  border-radius: 7rpx;
+  letter-spacing: 0.1rem;
+  padding-left: 10rpx;
+  padding-top: 3rpx;
+  font-family: Microsoft Yahei;
+}
+
+.top-box .top-comment{
+  vertical-align: middle;
+}
+
+.commentPart .upPart{
+  position: absolute;
+  right: 20rpx;
+}
+
+.commentPart .up{
+  width: 24rpx;
+  height: 24rpx;
+}
+
+.commentPart .upNum{
+  color: #4A6141;
+  margin: 0 10rpx;
+  font-size: 24rpx;
+}
+
+.commentPart .post-comment{
+  letter-spacing: 0.05rem;
+  font-size: 28rpx;
+  color: black;
+  margin: 5rpx 40rpx 30rpx 10rpx;
+}
+.commentPart .post-time{
+  border-bottom: 1rpx solid #f2e7e1;
+  padding-bottom:6rpx;
+  margin: 10rpx 15rpx;
+  font-size: 24rpx;
+  color: #ccc;
+}
+
+/**********Mask Part用于使背面变灰***************/
+.mask{
+  z-index: 999;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top:0;
+  left:0
+  
+}
+
+/***********输入框部分*************/
+.upload-comment{
+  background-color: white;
+  border-top-left-radius: 40rpx;
+  border-top-right-radius: 40rpx;
+  width: 690rpx;
+  border:30rpx solid white;
+  font-size: 28rpx;
+  position: fixed;
+  
+  bottom: -860rpx;
+  height: 800rpx;
+  z-index: 1000;
+  overflow-y: hidden;
+}
+
+.upload-comment .upload-status{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-top: 15rpx;
+  width: 700rpx;
+}
+
+.upload-comment .upload-cancel{
+  padding-left: 15rpx;
+  width: 20rpx;
+  height: 20rpx;
+}
+
+.upload-comment .upload-hint1{
+  margin-left: 240rpx;
+  letter-spacing: 0.1em;
+}
+
+.upload-comment .upload-submit{
+  width: 80rpx;
+  height: 50rpx;
+  background-color: #EDEDED;
+  color: #BEBEBE;
+  letter-spacing: 0.1em;
+  border: 5px solid white;
+  border-radius: 10px;
+  margin-left: 200rpx;
+  padding-left: 20rpx;
+  padding-top: 10rpx;
+}
+
+.upload-comment .upload-submitted{
+  width: 80rpx;
+  height: 50rpx;
+  background-color: #07C160;
+  color: #FFFFFF;
+  letter-spacing: 0.1em;
+  border: 5px solid white;
+  border-radius: 10px;
+  margin-left: 200rpx;
+  padding-left: 20rpx;
+  padding-top: 10rpx;
+}
+
+.upload-comment .upload-input{
+  width: 680rpx;
+  margin-top: 40rpx;
+  padding-left: 0.3em;
+}
+
+/*
+.input-box{
+  position: relative;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #EAE8E8;
+  border-top: 1rpx solid #D5D5D5;
+  min-height: 100rpx;
+  z-index: 1000;
+}
+
+.input-box .send-msg-box{
+  /*设置展现方式是flex，默认的方向为row，因此需将要求的三个元素分开*
+  width: 100%;
+  height: 100%;
+  display: flex;
+  padding: 20rpx 0;
+}
+
+.input-box .input-item{
+  margin:0 5rpx;
+  flex: 1;
+  width: 100%; /*width 为0是什么意思？
+  position: relative;
+}
+
+.input-box .input{
+  border: 1rpx solid #D5D5D5;
+  background-color: #fff;
+  border-radius: 3px;
+  line-height: 65rpx;
+  margin:5rpx 5rpx 5rpx 5rpx ;
+  font-size: 24rpx;
+  color: #838383;
+  padding: 0 2%;
+}
+
+.input-box .submit-input{
+  width: auto;
+  max-height: 500rpx;
+  height: 65rpx;
+  word-break: break-all;
+  overflow: auto;
+}
+
+.input-box .comment-icon{
+  height: 60rpx;
+  width: 60rpx;
+  left: 6rpx;
+}
+
+.input-box .add-icon{
+  margin:0 5rpx;
+  height: 65rpx;
+  width: 65rpx;
+  transform: scale(0.9);
+  margin-top: 2px;
+}
+
+
+
+
+.input-box .submit-send{
+  font-size: 24rpx;
+  margin-top: 5rpx;
+  margin-right: 8rpx;
+  line-height: 60rpx;
+  width: 120rpx;
+  height: 60rpx;
+  background-color: #4A6141;
+  border-radius:5rpx;
+  color: #fff;
+  text-align: center;
+  font-family:Microsoft Yahei;
+}
+
+*/
