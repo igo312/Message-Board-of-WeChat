@@ -27,7 +27,7 @@
 
 4.在绑定过程中会提示添加小程序页面路径，请使用`pages/post/comment/comment?idx=(输入你自己的编号)`进行绑定
 
-![image](https://636f-comment-cloud-3r8vc-1302746278.tcb.qcloud.la/%E5%89%AA%E8%BE%91.png?sign=591a4dfefc0390de8a343abc4dbb1d05&t=1598450036)
+![image](https://github.com/igo312/Message-Board-of-WeChat/blob/master/%E5%89%AA%E8%BE%91.png)
 
 
 
