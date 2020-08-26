@@ -117,7 +117,7 @@ const returnComments= function(){
 }
 
 
-function login(cWindow){
+async function login(cWindow){
     var that = this;
     return wx.getSetting({
         success (res){
@@ -131,7 +131,7 @@ function login(cWindow){
                     userInfo:userinfo,
                     userStatus:true,
                 })
-                console.log("User is authorized")
+                console.log("init1: User is authorized")
                 wx.setStorageSync('userInfo', userinfo)
 
                 // 实现openId的获取
@@ -141,20 +141,18 @@ function login(cWindow){
                   success:function (res){
                     wx.setStorageSync('userOpenId', res.result.openid)
                     const comments = returnComments();
-                    console.log("login true setdata")
+                    console.log("init1: login true setdata")
                     cWindow.userOpenId = res.result.openid;
                     cWindow.setData({
                         userOpenId:res.result.openid,
                         comments:comments
                     })
+                    cWindow.setHeight();
                   }})}})}
                 },
         fail (res){
             console.log("授权失败!")
         },
-        complete (){
-            
-        }
       })
 }
 

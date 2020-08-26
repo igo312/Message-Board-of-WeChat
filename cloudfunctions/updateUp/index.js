@@ -20,11 +20,13 @@ exports.main = async (event, context) => {
       data:{
         upInfo:dbc.set({
           "upUserList":comments[i].upInfo.upUserList,
-          "upNum":comments[i].upInfo.upNum
+          "upNum":comments[i].upInfo.upNum,
+          
         })
       }
     })
     task.push(promise)
+    
   }
   return  (
     await Promise.all(task).then(res=>{console.log("Database \

@@ -3,8 +3,18 @@ import {comments} from '../../../data/data'
 import {itPost} from '../../../item/item-post'
 import {getDiffTime, login, randomString} from '../../../utils/util'
 var app = getApp(); 
+/*
+const origin_style = {
+  'style':'background-color: #EAE8E8;',
+  'longTap':false,
+};
+const changed_style = {
+  'style':'background-color: #A5D9EE;',
+  'longTap':true,
+}
+*/
 Page({
-
+ 
   /**
    * 页面的初始数据
    */
@@ -14,7 +24,10 @@ Page({
     keyboardStatus:false,
     postStatus:false,
     userInfo:"",
-    storageKeyName:"comments"
+    storageKeyName:"comments",
+    moreDeleteStatus:false,
+    txtBottom:"bottom:-10000px;"
+    //comment_style:origin_style,
   },
 
   /**获取用户信息**/
@@ -27,10 +40,149 @@ Page({
   /*
     页面函数
   */
+
+  /*
+  用于评论框的变蓝进行设定，但做的还不好，看wxml
+  longTapDelete:function(){
+    this.setData({
+      comment_style:changed_style
+    })
+  },
+
+  longTapReturn:function(){
+    this.setData({
+      comment_style:origin_style
+    })
+  },
+  */
+  //setData 以及获取最新的页面高度
+  setHeight:function(id){
+    var key = id||"#mainPage"
+    var that = this;
+    var query = wx.createSelectorQuery();
+    query.select(key).boundingClientRect();
+    query.exec(function(rect){
+      if(rect[0] === null){
+        console.log("Cannot get the main height, id is "+key)
+      }
+      else{
+        console.log("Get the page(height,width...) property successfully");//观察数据
+        //console.log(rect[0])
+        if(rect[0].height<1200)rect[0].height=1200; // 1200 is ipad pro inch 
+        that.setData({
+          uploadHeight:rect[0].height,
+          txtHeight:"height:"+rect[0].height+"px; ",
+          txtBottom:"bottom:-"+rect[0].height+"px; ",
+        });
+      }
+    })
+    
+ 
+    // query自动保存了boundingClientRect执行后的参数,作为形参可自动传入exec
+  },
+
+  /*********更多选择************/
+  //点击“更多”拉起更多选择
+  up_moreFunction:function(event){
+    var idx = event.currentTarget.dataset.moreIdx;
+    var userID = this.userOpenId;
+    if(this.data.comments[idx].openID==userID){
+      this.setData({
+        moreDeleteStatus:true,
+      })
+    }else{
+      this.setData({
+        moreDeleteStatus:false,
+      })
+    }
+    this.moreFunctionAnimation.translateY(-this.data.uploadHeight).step();
+    this.setData({
+      moreMessage: this.data.comments[idx].username+":"+this.data.comments[idx].content.txt,
+      moreIdx:idx,
+      moreFunctionAnimation:this.moreFunctionAnimation.export(),
+      keyboardInput:"",
+      keyboardStatus:false,
+      postStatus:!this.data.postStatus,
+    });
+  },
+  
+  //“更多中的”点赞功能实现
+  moreFunction_up:function(event){
+    var idx = this.data.moreIdx;
+    console.log("comment id is "+idx);
+    var res = this.comment_post.upUpdate(idx, this.userOpenId);
+    this.setData({
+      comments:res
+    });
+    this.translateYDown();
+    if(res[idx].upInfo.upStatus){
+      wx.showToast({
+        title: '点赞成功',
+        duration: 800,
+        icon: "success"
+      })
+  }else{
+    wx.showToast({
+      title: '点赞取消',
+      duration: 800,
+      icon: "none"
+    })
+  }
+  },
+  
+  //"更多中的"删除功能实现
+  moreFunction_delete:function(event){
+    var idx = this.data.moreIdx;
+    const ipx = this.data.comments[idx]._id
+    console.log(`_id is ${ipx} id is ${idx}`)
+    this.comment_post.deleteBase(this.idx, ipx);
+    this.data.comments.splice(idx, 1)
+    this.setData({
+      comments:this.data.comments
+    })
+    wx.setStorageSync('comments', this.data.comments)
+    wx.showToast({
+      title: '删除成功',
+      icon: "success",
+      duration: 1000
+    })
+    this.translateYDown();
+  },
+
+  //"更多中的"留言功能实现
+  moreFunction_leave:function(){
+    this.translateYDown()
+    this.translateYUp()
+    this.setData({
+      sendStatus:false,
+      moreIdx:this.data.moreIdx,
+    })
+  },
+  /*************end***************/
+
+  /*************输入框部分**********/
   //实现模块上下移动
+  translateSendUp:function(){
+    this.translateYUp()
+    this.setData({
+      sendStatus:true,
+    })
+  },
+  
+  translateLeaveUp:function(event){
+    this.translateYUp()
+    this.setData({
+      sendStatus:false,
+      moreIdx:event.currentTarget.dataset.moreIdx,
+    })
+   
+  },
+
   translateYDown:function(){
     this.animation.translateY(0).step();
+    this.moreFunctionAnimation.translateY(0).step();
     this.setData({
+      moreFunctionAnimation:this.moreFunctionAnimation.export(),
       animation:this.animation.export(),
       keyboardInput:"",
       keyboardStatus:false,
@@ -47,18 +199,18 @@ Page({
     });
   },
 
-  // 实现信息的发送以及数据库的更新
-  sendMoreMsg: function(){
+  // 实现对用户的回复
+  leaveMoreMsg: function(){
     var res = this.data.keyboardInput;
     var time = parseInt(new Date()/1000);
     var that = this.data.userInfo;
+    var idx = this.data.moreIdx;
+    const id = this.data.comments[idx]._id;
     var post = {
-      "_id":randomString(),
+      "ownerId":id,
       "username":that.nickName,
-      "avatar":that.avatarUrl,
-      "create_time":time,
-      "formatedDate": getDiffTime(time, true),
-      "content":{txt:res},
+      "comment":res,
+      "time":time,
       "upInfo":{
         "upNum":0,
         "upStatus":false,
@@ -67,11 +219,48 @@ Page({
     } ;
 
     console.log(post);
+    res = this.comment_post.updateLeaveStorage(post, idx, id, this.idx);
+    this.setData({
+      keyboardInput:"",
+      comments:res
+    })
+    this.setHeight();
+    wx.showToast({
+      title: '评论成功',
+      icon: "success",
+      duration: 1000
+    })
+    this.translateYDown();
+  },
+
+  // 实现信息的发送以及数据库的更新
+  sendMoreMsg: function(){
+    var res = this.data.keyboardInput;
+    var time = parseInt(new Date()/1000);
+    var that = this.data.userInfo;
+    var post = {
+      "_id":randomString(),
+      "username":that.nickName,
+      "openID":this.userOpenId,
+      "avatar":that.avatarUrl,
+      "create_time":time,
+      "formatedDate": getDiffTime(time, true),
+      "content":{txt:res},
+      "upInfo":{
+        "upNum":0,
+        "upStatus":false,
+        "upUserList":[]
+      },
+      "leaveMessage":[]
+    } ;
+
+    console.log(post);
     res = this.comment_post.updateCommentStorage(post, this.idx);
     this.setData({
-      comments: res,
-      keyboardInput:""
+      keyboardInput:"",
+      comments:res
     })
+    this.setHeight();
     wx.showToast({
       title: '评论成功',
       icon: "success",
@@ -86,14 +275,19 @@ Page({
     this.data.keyboardInput = res;
     if(res != ""){
     this.setData({
-      keyboardStatus:true
+      keyboardStatus:true,
+      SEND:true&&this.data.sendStatus,
+      LEAVE:true&&!this.data.sendStatus
     })
     }else{
       this.setData({
-        keyboardStatus:false
+        keyboardStatus:false,
+        SEND:false&&this.data.sendStatus,
+        LEAVE:false&&!this.data.sendStatus
       })
     }
   },
+  /**************end***************/
 
   // 点赞功能的实现
   setUp: function(event){
@@ -110,7 +304,7 @@ Page({
     // 评论数据初始化
     await this.comment_post.commentFromCloud(e.idx, this);
     //获取用户信息
-    await login(this);
+    // await login(this);
   },
 
   /**
@@ -143,26 +337,18 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
+    // 用于留言框的动画
     this.animation = wx.createAnimation({
       duration:250,
       timingFunction:"linear"
     });
-    var query = wx.createSelectorQuery();
-    var that = this;
-    query.select("#upload").boundingClientRect();
-    
-    // query自动保存了boundingClientRect执行后的参数,作为形参可自动传入exec
-    query.exec(function(rect){
-      if(rect[0] === null){
-        console.log("Cannot get the upload height")
-      }
-      else{
-        console.log("Get the page(height,width...) property successfully");//观察数据
-        that.setData({
-          uploadHeight:rect[0].height
-        });
-      }
-    })
+
+    // 用于更多功能点击的动画
+    this.moreFunctionAnimation = wx.createAnimation({
+      duration:250,
+      timingFunction:"linear"
+    });
+
   },
 
   /**

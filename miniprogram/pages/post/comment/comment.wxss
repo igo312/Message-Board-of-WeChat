@@ -104,11 +104,14 @@ page{
 }
 
 .commentPart .post-comment{
+  
   letter-spacing: 0.05rem;
   font-size: 28rpx;
   color: black;
   margin: 5rpx 40rpx 30rpx 10rpx;
 }
+
+
 .commentPart .post-time{
   border-bottom: 1rpx solid #f2e7e1;
   padding-bottom:6rpx;
@@ -120,14 +123,134 @@ page{
 /**********Mask Part用于使背面变灰***************/
 .mask{
   z-index: 999;
-  height: 100%;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.2);
   position: absolute;
   top:0;
-  left:0
+  left:0;
+}
+
+/***********更多模块***************/
+.commentPart .message-part{
+  margin-left: 10rpx;
+  margin-top: -20rpx;
   
 }
+
+.commentPart .leave-message{
+  width: 24rpx;
+  height: 24rpx;
+}
+
+.commentPart .more-function{
+  margin-left: 45rpx;
+  width: 24rpx;
+  height: 24rpx;
+}
+
+/*********更多功能块*********/
+.upload-moreFunction{
+  background-color: white;
+  border-top-left-radius: 40rpx;
+  border-top-right-radius: 40rpx;
+  border: solid white;
+  border-width: 20rpx 0 0 0;
+  z-index: 1000;
+  width: 750rpx;
+
+  position: fixed;
+ 
+  overflow-y: hidden;
+}
+
+.upload-moreFunction .top-module{
+ margin-top: 20rpx;
+ height: 40rpx;
+}
+
+.upload-moreFunction .intro{
+ overflow: hidden;
+ text-overflow: ellipsis;
+ white-space: nowrap;
+ text-align: center;
+ color: #8B8B8B;
+ font-size: 0.8rem;
+ 
+ padding: 0 2rem 5rpx 2rem;
+}
+
+.upload-moreFunction .module{
+ height: 50rpx;
+ margin-top: 10rpx;
+ width: 100%;
+ padding-top: 15rpx;
+ border-top: 3rpx solid #E4E8E8;
+}
+
+.upload-moreFunction .image{
+ width: 32rpx;
+ height: 32rpx;
+ margin-left: 300rpx;
+}
+
+.upload-moreFunction .message{
+ margin-left: 18rpx;
+ font-size: 1rem;
+ font-family: Microsoft Yahei;
+  letter-spacing: 0.1rem;
+  color: black;
+}
+
+.upload-moreFunction .cancel{
+  height:60rpx;
+  padding-top: 15rpx;
+  border-top: 10rpx solid #E4E8E8;
+}
+
+.upload-moreFunction .cancel-message{
+  margin-left: 320rpx;
+  padding-top: 5rpx;
+  font-size: 1.04rem;
+  font-family: Microsoft Yahei;
+  letter-spacing: 0.3rem;
+}
+/***********end**************/
+
+/************留言部分*****************/
+.subComment{
+  margin-left: -5rpx;
+}
+.subComment .user{
+  border:solid #07C160;
+  border-width: 0 0 0 5rpx;
+  padding: 3rpx 0 8rpx 8rpx; 
+  font-size: 24rpx;
+  letter-spacing: 0.02rem;
+  color: #8B8B8B;
+}
+
+.subComment .message{
+  padding-left: 11rpx;
+  font-size: 28rpx;
+  color: black;
+  font-family: Microsoft Yahei;
+}
+
+.subComment .message-part{
+  margin-top: 6rpx;
+}
+
+.subComment .leave-message{
+  width: 24rpx;
+  height: 24rpx;
+}
+
+.subComment .more-function{
+  
+  width: 24rpx;
+  height: 24rpx;
+}
+/************end*****************/
 
 /***********输入框部分*************/
 .upload-comment{
@@ -139,7 +262,7 @@ page{
   font-size: 28rpx;
   position: fixed;
   
-  bottom: -860rpx;
+
   height: 800rpx;
   z-index: 1000;
   overflow-y: hidden;
@@ -154,17 +277,20 @@ page{
 }
 
 .upload-comment .upload-cancel{
+  flex-shrink: 0;
   padding-left: 15rpx;
   width: 20rpx;
   height: 20rpx;
 }
 
 .upload-comment .upload-hint1{
+  flex-shrink: 0;
   margin-left: 240rpx;
   letter-spacing: 0.1em;
 }
 
 .upload-comment .upload-submit{
+  flex-shrink: 0;
   width: 80rpx;
   height: 50rpx;
   background-color: #EDEDED;
@@ -178,6 +304,7 @@ page{
 }
 
 .upload-comment .upload-submitted{
+  flex-shrink: 0;
   width: 80rpx;
   height: 50rpx;
   background-color: #07C160;
@@ -195,82 +322,3 @@ page{
   margin-top: 40rpx;
   padding-left: 0.3em;
 }
-
-/*
-.input-box{
-  position: relative;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: #EAE8E8;
-  border-top: 1rpx solid #D5D5D5;
-  min-height: 100rpx;
-  z-index: 1000;
-}
-
-.input-box .send-msg-box{
-  /*设置展现方式是flex，默认的方向为row，因此需将要求的三个元素分开*
-  width: 100%;
-  height: 100%;
-  display: flex;
-  padding: 20rpx 0;
-}
-
-.input-box .input-item{
-  margin:0 5rpx;
-  flex: 1;
-  width: 100%; /*width 为0是什么意思？
-  position: relative;
-}
-
-.input-box .input{
-  border: 1rpx solid #D5D5D5;
-  background-color: #fff;
-  border-radius: 3px;
-  line-height: 65rpx;
-  margin:5rpx 5rpx 5rpx 5rpx ;
-  font-size: 24rpx;
-  color: #838383;
-  padding: 0 2%;
-}
-
-.input-box .submit-input{
-  width: auto;
-  max-height: 500rpx;
-  height: 65rpx;
-  word-break: break-all;
-  overflow: auto;
-}
-
-.input-box .comment-icon{
-  height: 60rpx;
-  width: 60rpx;
-  left: 6rpx;
-}
-
-.input-box .add-icon{
-  margin:0 5rpx;
-  height: 65rpx;
-  width: 65rpx;
-  transform: scale(0.9);
-  margin-top: 2px;
-}
-
-
-
-
-.input-box .submit-send{
-  font-size: 24rpx;
-  margin-top: 5rpx;
-  margin-right: 8rpx;
-  line-height: 60rpx;
-  width: 120rpx;
-  height: 60rpx;
-  background-color: #4A6141;
-  border-radius:5rpx;
-  color: #fff;
-  text-align: center;
-  font-family:Microsoft Yahei;
-}
-
-*/

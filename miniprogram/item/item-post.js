@@ -1,4 +1,4 @@
-import {getDiffTime, randomString} from '../utils/util.js'
+import {getDiffTime, randomString, login} from '../utils/util.js'
 import { comments } from '../data/data.js';
 
 class itPost{
@@ -8,7 +8,7 @@ class itPost{
 
   //实现点赞功能，点赞或者取消。更新缓存数据，返回最新的缓存数据
   upUpdate(idx, openId){
-    var res = this.getCommentStorage();
+    var res = this._getCommentStorage();
     if(res[idx].upInfo.upStatus){
       // 取消点赞
       res[idx].upInfo.upNum--;
@@ -57,7 +57,7 @@ class itPost{
     key = key||this.storageKeyName;
     // console.log("key name is"+key);
     // 保存在当地数据
-    var res = this.getCommentStorage(key);
+    var res = this._getCommentStorage(key);
     // 在置顶后添加数据
     res.splice(1,0,data);
     wx.setStorageSync(key, res);
@@ -65,7 +65,30 @@ class itPost{
     //console.log("update comments is "+ [data])
     return res
   }
-  getCommentStorage(key){
+
+  updateLeaveStorage(data, idx, ownerId, dIdx, key){
+    var res = this._getCommentStorage(key);
+    key = key||this.storageKeyName;
+    res[idx].leaveMessage.push(data)
+    wx.cloud.callFunction({
+      name:"leaveComment",
+      data:{
+        LM:res[idx].leaveMessage,
+        ownerId:ownerId,
+        idx:dIdx,
+      }
+    }).then(res=>{
+      console.log("Database leave meassage successfully.")
+    }).catch(e=>{
+      console.error;
+      throw e;
+    })
+    wx.setStorageSync(key, res)
+    return res 
+  }
+
+  //update
+  _getCommentStorage(key){
     // use syny method
     // use this.data.data to update storage
     // 从本地缓存中获取信息
@@ -76,29 +99,31 @@ class itPost{
 
   // 从数据库读取信息
   // 要不要添加环境参数？
-  commentFromCloud(idx, cWindow){
+  async commentFromCloud(idx, cWindow){
     // 因为cm是then和catch是异步编程，因此在这里去获得缓存是不正确的
     var that = this;
     try{
-      const comment_data = wx.cloud.callFunction({
+      wx.cloud.callFunction({
           name:"getComment",
           data:{
             idx:idx
           },
           success: function(res){
-            console.log("Successfully Load database data from comments-"+idx);
+            console.log("init0: Successfully Load database data from comments-"+idx);
             // console.log("comments data is "+res.result.data)
             var data = that.compareDate(res.result.data);
             for(let idx=0;idx<data.length;idx++){
               data[idx].formatedDate = getDiffTime(data[idx].create_time, true);
             }
             wx.setStorageSync(that.storageKeyName, data)
+            login(cWindow)
           },
           fail: function(res){
             const initData = [{
               _id:randomString(),
               description:"Oringinal Response",
               avatar:'/images/userAvatar.jpg',
+              openID:"Hello World",
               artIdx:idx,
               content:{
                 audio:null,
@@ -110,6 +135,7 @@ class itPost{
                 upNum:0,
                 upStatus:false,
               },
+              moreComment:[],
               create_time:1628555309, //时间对应于2021年，在未来进行更新
               username:'饼子屋',
             }]
@@ -137,6 +163,7 @@ class itPost{
                 cWindow.setData({
                   comments:comments
                 })
+                cWindow.setHeight();
               }
               }
             })
@@ -148,7 +175,7 @@ class itPost{
     }
   }
 
-  // 更新数据库信息
+  // 更新数据库信息(主评论的添加)
   updateBase(idx, data, key){
     key = key||this.storageKeyName;
     //console.log("data is "+ data)
@@ -167,6 +194,22 @@ class itPost{
     })
   }
 
+  // 删除数据库信息
+  deleteBase(idx, ipx, key){
+    key = key||this.storageKeyName;
+    wx.cloud.callFunction({
+      name:"deleteComment",
+      data:{
+        ipx:ipx,
+        idx:idx
+      }
+    }).then(res=>{
+      console.log("Database has deleted one comment")
+    }).catch(e=>{
+      throw e;
+    })
+  }
+  
   // 更新点赞
   updateUp(idx, data, key){
     key = this.storageKeyName||key
@@ -183,6 +226,7 @@ class itPost{
       throw e;
     })
   }
+
 
   // 云更新集合(点赞以及信息) 
   /*
