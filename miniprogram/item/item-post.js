@@ -7,28 +7,46 @@ class itPost{
   }
 
   //实现点赞功能，点赞或者取消。更新缓存数据，返回最新的缓存数据
-  upUpdate(idx, openId){
+  upUpdate(idx, lIdx, openId){
     var res = this._getCommentStorage();
+    if(typeof(lIdx)=="number"){
+      console.log(`id is ${idx} lIdx is ${lIdx} res is ${res[idx].leaveMessage[lIdx].upInfo}`)
+      if(res[idx].leaveMessage[lIdx].upInfo.upStatus){
+        // 取消点赞
+        res[idx].leaveMessage[lIdx].upInfo.upNum--;
+        const index = res[idx].leaveMessage[lIdx].upInfo.upUserList.indexOf(openId)
+        if(index>-1){
+          res[idx].leaveMessage[lIdx].upInfo.upUserList.splice(index, 1)
+          console.log("取消点赞成功")
+        }else{
+          console.log(`取消点赞失败 index is ${index} openId is ${openId} upList is ${res[idx].leaveMessage[lIdx].upInfo.upUserList}`)
+        }
+      }else{
+        res[idx].leaveMessage[lIdx].upInfo.upNum++;
+        res[idx].leaveMessage[lIdx].upInfo.upUserList.unshift(openId)
+      }
+      res[idx].leaveMessage[lIdx].upInfo.upStatus = !res[idx].leaveMessage[lIdx].upInfo.upStatus;
+    }else{
     if(res[idx].upInfo.upStatus){
       // 取消点赞
       res[idx].upInfo.upNum--;
       const index = res[idx].upInfo.upUserList.indexOf(openId)
       if(index>-1){
-      res[idx].upInfo.upUserList.splice(index, 1)
-      console.log("取消点赞成功")
+        res[idx].upInfo.upUserList.splice(index, 1)
+        console.log("取消点赞成功")
+      }else{
+        console.log(`取消点赞失败 index is ${index} openId is ${openId} upList is ${res[idx].upInfo.upUserList}`)
+      }
     }else{
-      console.log(`取消点赞失败 index is ${index} openId is ${openId} upList is ${res[idx].upInfo.upUserList}`)
-    }
-    }
-    else{
       res[idx].upInfo.upNum++;
       res[idx].upInfo.upUserList.unshift(openId)
     }
     res[idx].upInfo.upStatus = !res[idx].upInfo.upStatus;
-    
+    }
     wx.setStorageSync(this.storageKeyName, res);
     return res
   }
+
 
   // 对于时间先后的排序，最新的在前
   compareDate(data){
@@ -135,12 +153,13 @@ class itPost{
                 upNum:0,
                 upStatus:false,
               },
-              moreComment:[],
               create_time:1628555309, //时间对应于2021年，在未来进行更新
               username:'饼子屋',
+              leaveMessage:[],
             }]
             console.log("initially set storage")
             wx.setStorageSync(that.storageKeyName, initData)
+            login(cWindow)
             wx.cloud.callFunction({
             name:"initComment",
             data:{
@@ -195,13 +214,15 @@ class itPost{
   }
 
   // 删除数据库信息
-  deleteBase(idx, ipx, key){
+  deleteBase(idx, lIdx, ipx, data, key){
     key = key||this.storageKeyName;
     wx.cloud.callFunction({
       name:"deleteComment",
       data:{
         ipx:ipx,
-        idx:idx
+        idx:idx,
+        lIdx:lIdx,
+        res:data,
       }
     }).then(res=>{
       console.log("Database has deleted one comment")
