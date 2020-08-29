@@ -44,19 +44,22 @@
               <text class="content-txt" selectable="{{true}}">{{cm.content.txt}}</text>
             </view>
             <view class="message-part">
-            <image class="leave-message" src="../../../images/icon/wx_app_message.png" catchtap="translateLeaveUp" data-more-idx="{{idx}}" />
-            <image class="more-function" src="../../../images/icon/wx_more_function.png" catchtap="up_moreFunction" data-more-idx="{{idx}}" />
+              <view class="image-size" catchtap="translateLeaveUp" data-more-idx="{{idx}}">
+                <image class="leave-message" src="../../../images/icon/wx_app_message.png"  />
+              </view>
+              <view class="image-size"  catchtap="up_moreFunction" data-more-idx="{{idx}}" >
+                <image class="more-function" src="../../../images/icon/wx_more_function.png"/>
+              </view>
             </view>
             <!--对评论的留言板块-->
             <block wx:for="{{cm.leaveMessage}}" wx:for-item="lcm" wx:for-index="lidx">
               <view class="subComment">
                 <view class="IDPart">
                   <view class="user">{{lcm.username}}</view>
-                  
                   <view class="upPart">
                     <view class="login-check" hidden="{{!userStatus}}">
-                      <image class="up" hidden="{{lcm.upInfo.upStatus}}" src="../../../images/icon/wx_app_like.png" catchtap="lSetUp" data-comment-idx="{{idx}}" />
-                      <image class="up" hidden="{{!lcm.upInfo.upStatus}}" src="../../../images/icon/wx_app_liked.png" catchtap="lSetUp" data-comment-idx="{{idx}}"/>
+                      <image class="up" hidden="{{lcm.upInfo.upStatus}}" src="../../../images/icon/wx_app_like.png" catchtap="lSetUp" data-comment-idx="{{idx}}" data-l-idx="{{lidx}}" />
+                      <image class="up" hidden="{{!lcm.upInfo.upStatus}}" src="../../../images/icon/wx_app_liked.png" catchtap="lSetUp" data-comment-idx="{{idx}}" data-l-idx="{{lidx}}" />
                       <text  class="upNum">{{lcm.upInfo.upNum}}</text>
                     </view>
                   </view>
@@ -64,9 +67,13 @@
                 </view>
                 <view class="message">{{lcm.comment}}</view>
                 <view class="message-part">
-                  <image class="leave-message" src="../../../images/icon/wx_app_message.png" catchtap="translateLeaveUp" data-more-idx="{{idx}}" />
+                  <view class="image-size" catchtap="translateLeaveUp" data-more-idx="{{idx}}">
+                   <image class="leave-message" src="../../../images/icon/wx_app_message.png"  />
+                  </view>
                   <!--拉起更多实现的还不好-->
-                  <image class="more-function" src="../../../images/icon/wx_more_function.png" bindtap="" data-more-idx="{{idx}}" />
+                  <view class="image-size" catchtap="up_moreFunction" data-more-idx="{{idx}}" data-l-idx="{{lidx}}">
+                    <image class="more-function" src="../../../images/icon/wx_more_function.png"  />
+                  </view>
                 </view>
               </view>
             </block>
@@ -85,7 +92,7 @@
   <view id="mask" class="mask"  style="{{txtHeight}}" hidden="{{!postStatus}}" catchtap="translateYDown"></view>
 
   <!--留言部分 以隐藏形式实现-->
-  <view id="upload" class="upload-comment" style="{{txtBottom}}" animation="{{animation}}">
+  <view id="upload" class="upload-comment" style="{{commentStyle}}" animation="{{animation}}">
     <view class="upload-status">
       <image class="upload-cancel" src="../../../images/icon/wx_app_xx.png" bindtap="translateYDown" />
       <view class="upload-hint1" >写留言</view>

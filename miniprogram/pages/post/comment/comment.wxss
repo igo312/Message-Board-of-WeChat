@@ -132,17 +132,21 @@ page{
 
 /***********更多模块***************/
 .commentPart .message-part{
+  flex-direction: row;
+  display: flex;
   margin-left: 10rpx;
   margin-top: -20rpx;
   
 }
 
 .commentPart .leave-message{
+  flex-shrink: 0;
   width: 24rpx;
   height: 24rpx;
 }
 
 .commentPart .more-function{
+  flex-shrink: 0;
   margin-left: 45rpx;
   width: 24rpx;
   height: 24rpx;
@@ -217,6 +221,11 @@ page{
 /***********end**************/
 
 /************留言部分*****************/
+.image-size{
+  flex-shrink: 0;
+  margin: 5rpx 10rpx 5rpx 5rpx
+}
+
 .subComment{
   margin-left: -5rpx;
 }
@@ -237,6 +246,8 @@ page{
 }
 
 .subComment .message-part{
+  flex-direction: row;
+  display: flex;
   margin-top: 6rpx;
 }
 
@@ -246,7 +257,7 @@ page{
 }
 
 .subComment .more-function{
-  
+
   width: 24rpx;
   height: 24rpx;
 }
@@ -261,9 +272,7 @@ page{
   border:30rpx solid white;
   font-size: 28rpx;
   position: fixed;
-  
-
-  height: 800rpx;
+  height: 480px;
   z-index: 1000;
   overflow-y: hidden;
 }
