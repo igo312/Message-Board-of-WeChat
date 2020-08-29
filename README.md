@@ -7,6 +7,46 @@
 
 - 大家可以在这里互相交流，如果需要可以留言创个群互相交流呢
 
+## 2020/8/28 更新
+
+### 更新简介
+
+- 添加了对留言的评论功能与点赞功能的完善
+- 添加了对留言、留言评论删除功能的实现
+- 完善了数据加载逻辑，保证了先获取数据再进行渲染
+- 对组件高宽进行了重新设定
+- 添加了更多功能选项，将评论、点赞、删除进行归纳
+
+### 详细说明
+
+#### 1.对留言评论的逻辑实现
+
+   利用变量控制调用的函数，在记录中添加一个列表（`leaveMessage`）保存评论记录，无论是在主留言评论还是对某一留言评论都会添加到留言记录中，时间排序为在列表末尾添加即从早到晚展现。在数据更新上，无论是添加评论还是在点赞上，都是直接利用`update`更新整个数组
+
+#### 2.组件高宽的问题
+
+ 组件高宽的问题主要为留言板在真机调试中比例不合适的问题=>
+
+ 问题在于: `rpx`作为基本单位，其定义是根据屏幕宽度实现自适应。这导致了在高度上其实不能做到真正的自适应，不同机型的长宽比例不同，`dpr`只实现了宽度  的自适应。在问题的解决上，调用`wx.systemInfoSync.windowHeight`来获取可使用屏幕高度，乘以一定系数来设定留言板的高度。
+
+#### 3. js控制wxss
+
+  js不能直接样式，但能通过设置文本，利用数据绑定`{{}}`实现控制样式如下面的代码
+
+
+```
+# javascript 的代码
+var commentStyle:"height: 0px; bottom:-1200px;"
+
+# wxml处的代码
+<view id="" class="" style="{{commentStyle}}" animation="">
+```
+
+### 接下来的目标
+
+- 实现被评论后用户会得到被回复的消息
+- 加速小程序的加载
+
 ## 1.代码添加与小程序绑定
 
 ### 代码相关注意事项
@@ -15,8 +55,6 @@
 2. 提交的代码都是自己写的代码，但是在项目初始化时，开发者工具会自动提供部分参考代码。请各位在使用时酌情筛选，另外可能在上传过程中漏掉了部分代码导致程序无法正常运行，请告诉我呢谢谢
 3. 创建项目时需要勾选'云开发 QuickStart 项目'，见[官方模版]([https://developers.weixin.qq.com/miniprogram/dev/wxcloud/basis/quickstart.html#_1-%E6%96%B0%E5%BB%BA%E4%BA%91%E5%BC%80%E5%8F%91%E6%A8%A1%E6%9D%BF](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/basis/quickstart.html#_1-新建云开发模板))
 4. 设计到云开发保存于[cloudfunctions](https://github.com/igo312/Message-Board-of-WeChat/tree/master/cloudfunctions)，具体的云开发函数部署见[[3]([https://developers.weixin.qq.com/miniprogram/dev/wxcloud/basis/quickstart.html#_1-%E6%96%B0%E5%BB%BA%E4%BA%91%E5%BC%80%E5%8F%91%E6%A8%A1%E6%9D%BF](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/basis/quickstart.html#_1-新建云开发模板))]；若有意向进行本地调试，需进行`npm install`的初始化，位置应在相应的云函数文件夹下，具体见[[4](https://blog.csdn.net/baidu_38607919/article/details/104048661)]
-5. 在[images](https://github.com/igo312/Message-Board-of-WeChat/tree/master/miniprogram/images)中`userAvatar.jpg`和`biCode.jpg`已删除，请自行添加图片替代。并将名称修改相应名称，否则程序会出现错误
-
 
 
 ### 小程序绑定
@@ -29,7 +67,8 @@
 
 4.在绑定过程中会提示添加小程序页面路径，请使用`pages/post/comment/comment?idx=(输入你自己的编号)`进行绑定
 
-![image](https://github.com/igo312/Message-Board-of-WeChat/blob/master/.image/%E5%89%AA%E8%BE%91.png)
+![image](https://github.com/igo312/Message-Board-of-WeChat/blob/master/剪辑.png)
+
 
 
 
