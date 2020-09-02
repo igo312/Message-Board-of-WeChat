@@ -21,9 +21,10 @@ const formatNumber = n => {
  * recordTime - {float} 时间戳
  * yearsFlag -{bool} 是否要年份
  */
-function getDiffTime(recordTime,yearsFlag) {
+function getDiffTime(recordTime, yearsFlag, jacentTrans) {
   if (recordTime) {
       recordTime=new Date(parseFloat(recordTime)*1000);
+      const trans = false||jacentTrans
       var minute = 1000 * 60,
           hour = minute * 60,
           day = hour * 24,
@@ -37,36 +38,42 @@ function getDiffTime(recordTime,yearsFlag) {
       var dayC = diff / day;
       var hourC = diff / hour;
       var minC = diff / minute;
-      if (weekR >= 1) {
+      if(trans){
+          // 用于消息推送的时间格式
           var formate='MM-dd hh:mm';
-          if(yearsFlag){
-              formate='yyyy-MM-dd hh:mm';
-          }
-          return recordTime.format(formate);
-      }
-      else if (dayC == 1 ||(hourC <24 && recordTime.getDate()!=now.getDate())) {
-          result = '昨天'+recordTime.format('hh:mm');
-          return result;
-      }
-      else if (dayC > 1) {
-          var formate='MM-dd hh:mm';
-          if(yearsFlag){
-              formate='yyyy-MM-dd hh:mm';
-          }
-          return recordTime.format(formate);
-      }
-      else if (hourC >= 1) {
-          result = parseInt(hourC) + '小时前';
-          return result;
-      }
-      else if (minC >= 1) {
-          result = parseInt(minC) + '分钟前';
-          return result;
-      } else {
-          result = '刚刚';
-          return result;
-      }
-  }
+          return recordTime.format(formate)
+      }else{
+        if (weekR >= 1) {
+            var formate='MM-dd hh:mm';
+            if(yearsFlag){
+                formate='yyyy-MM-dd hh:mm';
+            }
+            return recordTime.format(formate);
+        }
+        else if (dayC == 1 ||(hourC <24 && recordTime.getDate()!=now.getDate())) {
+            result = '昨天'+recordTime.format('hh:mm');
+            return result;
+        }
+        else if (dayC > 1) {
+            var formate='MM-dd hh:mm';
+            if(yearsFlag){
+                formate='yyyy-MM-dd hh:mm';
+            }
+            return recordTime.format(formate);
+        }
+        else if (hourC >= 1) {
+            result = parseInt(hourC) + '小时前';
+            return result;
+        }
+        else if (minC >= 1) {
+            result = parseInt(minC) + '分钟前';
+            return result;
+        } else {
+            result = '刚刚';
+            return result;
+        }
+    }
+    }
   return '';
 }
 

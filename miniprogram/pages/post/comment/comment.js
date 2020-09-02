@@ -227,6 +227,15 @@ Page({
 
   // 实现对用户的回复
   leaveMoreMsg: function(){
+    //订阅信息权限的提供
+    wx.requestSubscribeMessage({
+      tmplIds: ['2hbfH7DgzeI4CJQsKe0ItawTlGK4hK1ls6Lg2HD_ui8'],
+      success(res){console.log( "订阅消息授权成功")},
+      fail(e){
+        console.log("授权失败")
+        console.log(`errMsg is ${e.errMsg}, errCode is ${e.errCode}`)
+      }
+    })
     var res = this.data.keyboardInput;
     var time = parseInt(new Date()/1000);
     var that = this.data.userInfo;
@@ -245,8 +254,11 @@ Page({
       }
     } ;
 
-    console.log(post);
+    //数据库的更新
     res = this.comment_post.updateLeaveStorage(post, idx, id, this.idx);
+
+    //页面的重新渲染
+    console.log(post);
     this.setData({
       keyboardInput:"",
       comments:res
@@ -258,10 +270,23 @@ Page({
       duration: 1000
     })
     this.translateYDown();
+
+    //消息的推送
+    this.comment_post.push2client(post, res[idx], this.idx)
   },
 
   // 实现信息的发送以及数据库的更新
   sendMoreMsg: function(){
+    //订阅信息权限的提供
+    wx.requestSubscribeMessage({
+      tmplIds: ['2hbfH7DgzeI4CJQsKe0ItawTlGK4hK1ls6Lg2HD_ui8'],
+      success(res){console.log( "订阅消息授权成功")},
+      fail(e){
+        console.log("授权失败")
+        console.log(`errMsg is ${e.errMsg}, errCode is ${e.errCode}`)
+      }
+    })
+
     var res = this.data.keyboardInput;
     var time = parseInt(new Date()/1000);
     var that = this.data.userInfo;

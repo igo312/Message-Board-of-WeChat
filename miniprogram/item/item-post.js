@@ -47,7 +47,6 @@ class itPost{
     return res
   }
 
-
   // 对于时间先后的排序，最新的在前
   compareDate(data){
     //冒泡排序法两两比较
@@ -103,6 +102,30 @@ class itPost{
     })
     wx.setStorageSync(key, res)
     return res 
+  }
+
+  //将留言推送给这个模版下的所有用户
+  push2client(post, comment, idx){
+    function unique(arr){
+      return Array.from(new Set(arr))
+    }
+    const client = []
+    const openID = post.openID;
+    if(comment.openID!=openID)client.push(comment.openID);
+    for(let i=0;i<comment.leaveMessage.length;i++){
+      const lm = comment.leaveMessage[i];
+      if(lm.openID!=openID)client.push(lm.openID);
+    }
+    wx.cloud.callFunction({
+      name:"push2client",
+      data:{
+        idx:idx,
+        idList:unique(client),
+        usrname:post.username,
+        txt:post.comment,
+        time:getDiffTime(post.time, false, true)
+      }
+    })
   }
 
   //update

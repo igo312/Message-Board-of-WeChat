@@ -6,7 +6,7 @@
     <view class="Title-Part">
       <view class='Title'>饼子屋的烧烤摊</view>
       <button class='comment' open-type="getUserInfo" bindgetuserinfo="onGetUserInfo" hidden="{{userStatus}}">登录</button>
-      <button class='comment' bindtap="translateSendUp" hidden="{{!userStatus}}">写留言</button>
+      <button class='comment' catchtap="translateSendUp" hidden="{{!userStatus}}">写留言</button>
     </view>
 
     <!--一条评论的模版-->
@@ -94,13 +94,13 @@
   <!--留言部分 以隐藏形式实现-->
   <view id="upload" class="upload-comment" style="{{commentStyle}}" animation="{{animation}}">
     <view class="upload-status">
-      <image class="upload-cancel" src="../../../images/icon/wx_app_xx.png" bindtap="translateYDown" />
+      <image class="upload-cancel" src="../../../images/icon/wx_app_xx.png" catchtap="translateYDown" />
       <view class="upload-hint1" >写留言</view>
       <view class="upload-submit" hidden="{{keyboardStatus}}">提交</view>
-      <view class="upload-submitted" hidden="{{!SEND}}" bindtap="sendMoreMsg">提交</view>
-      <view class="upload-submitted" hidden="{{!LEAVE}}" bindtap="leaveMoreMsg" data-more-idx="{{moreIdx}}">提交</view>
+      <view class="upload-submitted" hidden="{{!SEND}}" catchtap="sendMoreMsg">提交</view>
+      <view class="upload-submitted" hidden="{{!LEAVE}}" catchtap="leaveMoreMsg" data-more-idx="{{moreIdx}}">提交</view>
     </view>
-    <textarea class="upload-input" placeholder="说说想吃什么，辣不辣，葱花香菜要不要" bindinput="bindCommentInput" value="{{keyboardInput}}"></textarea>
+    <textarea class="upload-input" placeholder="说说想吃什么，辣不辣，葱花香菜要不要" catchinput="bindCommentInput" value="{{keyboardInput}}"></textarea>
   </view>
 
   <!-- 更多功能 以隐藏形式实现-->
