@@ -54,8 +54,6 @@ var commentStyle:"height: 0px; bottom:-1200px;"
 3. 创建项目时需要勾选'云开发 QuickStart 项目'，见[官方模版]([https://developers.weixin.qq.com/miniprogram/dev/wxcloud/basis/quickstart.html#_1-%E6%96%B0%E5%BB%BA%E4%BA%91%E5%BC%80%E5%8F%91%E6%A8%A1%E6%9D%BF](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/basis/quickstart.html#_1-新建云开发模板))
 4. 设计到云开发保存于[cloudfunctions](https://github.com/igo312/Message-Board-of-WeChat/tree/master/cloudfunctions)，具体的云开发函数部署见[[3]([https://developers.weixin.qq.com/miniprogram/dev/wxcloud/basis/quickstart.html#_1-%E6%96%B0%E5%BB%BA%E4%BA%91%E5%BC%80%E5%8F%91%E6%A8%A1%E6%9D%BF](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/basis/quickstart.html#_1-新建云开发模板))]；若有意向进行本地调试，需进行`npm install`的初始化，位置应在相应的云函数文件夹下，具体见[[4](https://blog.csdn.net/baidu_38607919/article/details/104048661)]
 
-   
-
 
 
 ### 小程序绑定
@@ -69,6 +67,7 @@ var commentStyle:"height: 0px; bottom:-1200px;"
 4.在绑定过程中会提示添加小程序页面路径，请使用`pages/post/comment/comment?idx=(输入你自己的编号)`进行绑定
 
 ![image](https://github.com/igo312/Message-Board-of-WeChat/blob/master/剪辑.png)
+
 
 
 ## 2.代码模块解释
