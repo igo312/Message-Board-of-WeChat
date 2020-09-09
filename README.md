@@ -12,7 +12,9 @@
 ### 详细说明
 
 利用`wx.requestSubscribeMessage`实现订阅消息的授权(调试必须在真机、tap事件中调试)
+
 利用`subscribeMessage.send`在云开发端实现消息给用户的推送
+
 具体逻辑在`item-post.js/push2client`函数中实现
 
 ## 2020/8/28 更新

@@ -25,7 +25,7 @@
 			"outputPath": ""
 		},
 		"useIsolateContext": true,
-		"useCompilerModule": false,
+		"useCompilerModule": true,
 		"userConfirmedUseCompilerModuleSwitch": false
 	},
 	"appid": "wxf3383075e992324c",
@@ -70,6 +70,13 @@
 					"name": "pages/post/comment/comment",
 					"pathName": "pages/post/comment/comment",
 					"query": "idx=rsy0",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/post/welcome/welcome",
+					"pathName": "pages/post/welcome/welcome",
+					"query": "",
 					"scene": null
 				}
 			]
