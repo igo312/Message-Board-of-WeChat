@@ -1,10 +1,4 @@
 {
-  "permissions": {
-    "openapi": [
-      "subscribeMessage.addTemplate",
-      "subscribeMessage.send"
-    ]
-  },
   "pages": [
     "pages/post/welcome/welcome",
     "pages/post/comment/comment",

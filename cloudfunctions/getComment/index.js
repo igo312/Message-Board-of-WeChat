@@ -12,6 +12,13 @@ exports.main = async(event, context) => {
 }
 */
 
+/*
+//简易版加载，耗时差不多
+exports.main = async (event, context) => {
+  return await db.collection('comments-'+event.idx).get()
+}
+*/
+
 exports.main = async (event, context) => {
   // 先取出集合记录总数
   const countResult = await db.collection('comments-'+event.idx).count()
@@ -33,3 +40,4 @@ exports.main = async (event, context) => {
   })
 
 }
+

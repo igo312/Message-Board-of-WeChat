@@ -126,6 +126,7 @@ const returnComments= function(){
 
 async function login(cWindow){
     var that = this;
+    const t0 = new Date().getTime();
     return wx.getSetting({
         success (res){
           console.log("login Part")
@@ -138,8 +139,9 @@ async function login(cWindow){
                     userInfo:userinfo,
                     userStatus:true,
                 })
-                console.log("init1: User is authorized")
                 wx.setStorageSync('userInfo', userinfo)
+                const t1 = new Date().getTime();
+                console.log("init1: User is authorized, consume time: "+(t1-t0)/1000)
 
                 // 实现openId的获取
                 wx.cloud.callFunction({
@@ -148,13 +150,14 @@ async function login(cWindow){
                   success:function (res){
                     wx.setStorageSync('userOpenId', res.result.openid)
                     const comments = returnComments();
-                    console.log("init1: login true setdata")
                     cWindow.userOpenId = res.result.openid;
                     cWindow.setData({
                         userOpenId:res.result.openid,
                         comments:comments
                     })
                     cWindow.setHeight();
+                    const t2 = new Date().getTime();
+                    console.log("init1: login true setdata, consume time: "+(t2-t1)/1000)
                   }})}})}
                 },
         fail (res){

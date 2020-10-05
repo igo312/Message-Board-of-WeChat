@@ -272,7 +272,7 @@ Page({
     this.translateYDown();
 
     //消息的推送
-    this.comment_post.push2client(post, res[idx], this.idx)
+    this.comment_post.push2client(post, res[idx], this.idx, true)
   },
 
   // 实现信息的发送以及数据库的更新
@@ -313,12 +313,14 @@ Page({
       comments:res
     })
     this.setHeight();
+    
     wx.showToast({
       title: '评论成功',
       icon: "success",
       duration: 1000
     })
     this.translateYDown();
+    this.comment_post.push2client(post, res, this.idx, false)
   },
 
   bindCommentInput: function(event){

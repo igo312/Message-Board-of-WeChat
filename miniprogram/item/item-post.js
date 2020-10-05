@@ -105,10 +105,25 @@ class itPost{
   }
 
   //将留言推送给这个模版下的所有用户
-  push2client(post, comment, idx){
+  push2client(post, comment, idx, from_comment){
     function unique(arr){
       return Array.from(new Set(arr))
     }
+    // 主留言板的推送，只推送给自己
+    if(!from_comment){
+      wx.cloud.callFunction({
+        name:"push2client",
+        data:{
+          idx:idx,
+          usrname:post.username,
+          txt:post.content.txt,
+          time:getDiffTime(post.create_time, false, true),
+          from_comment:from_comment
+        }
+      })
+    }
+    // 评论里的推送
+    else{
     const client = []
     const openID = post.openID;
     if(comment.openID!=openID)client.push(comment.openID);
@@ -123,9 +138,10 @@ class itPost{
         idList:unique(client),
         usrname:post.username,
         txt:post.comment,
-        time:getDiffTime(post.time, false, true)
+        time:getDiffTime(post.time, false, true),
+        from_comment:from_comment
       }
-    })
+    })}
   }
 
   //update
@@ -143,6 +159,7 @@ class itPost{
   async commentFromCloud(idx, cWindow){
     // 因为cm是then和catch是异步编程，因此在这里去获得缓存是不正确的
     var that = this;
+    const t0 = new Date().getTime()
     try{
       wx.cloud.callFunction({
           name:"getComment",
@@ -150,13 +167,21 @@ class itPost{
             idx:idx
           },
           success: function(res){
-            console.log("init0: Successfully Load database data from comments-"+idx);
+            
             // console.log("comments data is "+res.result.data)
+            // 调用getComment占用了接近90%的时间
+            //const t1_0 = new Date().getTime();
+            //console.log("cloud function consume: "+(t1_0-t0)/1000)
+            // 循环比较时间基本不占用时间
             var data = that.compareDate(res.result.data);
             for(let idx=0;idx<data.length;idx++){
               data[idx].formatedDate = getDiffTime(data[idx].create_time, true);
             }
+            //const t1_1 = new Date().getTime();
+            //console.log("for loop consumes: "+(t1_1-t1_0)/1000)
             wx.setStorageSync(that.storageKeyName, data)
+            const t1 = new Date().getTime();
+            console.log(`init0: Successfully Load database data from comments-${idx}, time consume(from t0):${(t1-t0)/1000}`);
             login(cWindow)
           },
           fail: function(res){
@@ -209,6 +234,8 @@ class itPost{
               }
               }
             })
+            const t2 = new Date().getTime();
+            console.log(`init0: Complete process, time consume(from t0):${(t2-t0)/1000}`);
           },
       })
     }catch(e){

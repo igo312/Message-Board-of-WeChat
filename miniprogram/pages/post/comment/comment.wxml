@@ -11,7 +11,7 @@
 
     <!--一条评论的模版-->
     <view class="commentPart" >
-      <block wx:for="{{comments}}" wx:for-item="cm" wx:for-index="idx" wx:key="create_time">
+      <block wx:for="{{comments}}" wx:for-item="cm" wx:for-index="idx" wx:key="_id">
         <!--根节点
             |---头像
             |---ID、点赞数、内容
@@ -52,7 +52,7 @@
               </view>
             </view>
             <!--对评论的留言板块-->
-            <block wx:for="{{cm.leaveMessage}}" wx:for-item="lcm" wx:for-index="lidx">
+            <block wx:for="{{cm.leaveMessage}}" wx:for-item="lcm" wx:for-index="lidx" wx:key="_id">
               <view class="subComment">
                 <view class="IDPart">
                   <view class="user">{{lcm.username}}</view>
