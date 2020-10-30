@@ -1,4 +1,5 @@
 # 微信小程序--留言板功能开发（免服务器）
+![image](https://github.com/igo312/Message-Board-of-WeChat/blob/master/演示图.jpg)
 ## 前言
 
 - 实现了留言板块的开发，可以与公众号绑定，提供公众号一个留言板块
