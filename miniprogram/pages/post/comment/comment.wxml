@@ -5,7 +5,7 @@
     <!--标题设置-->
     <view class="Title-Part">
       <view class='Title'>饼子屋的烧烤摊</view>
-      <button class='comment' open-type="getUserInfo" bindgetuserinfo="onGetUserInfo" hidden="{{userStatus}}">登录</button>
+      <button class='comment' open-type="getUserInfo" bindtap="onGetUserInfo" hidden="{{userStatus}}">登录</button>
       <button class='comment' catchtap="translateSendUp" hidden="{{!userStatus}}">写留言</button>
     </view>
 

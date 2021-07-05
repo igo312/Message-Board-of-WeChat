@@ -2,7 +2,10 @@
 // 饼子屋的appid wx38010b72717b8b6b
 // oFZxX42Hb3ZvBtX2uWn1Hx0Bw8oA
 const cloud = require('wx-server-sdk')
-cloud.init()
+cloud.init({
+  // API 调用都保持和云函数当前所在环境一致
+  env: cloud.DYNAMIC_CURRENT_ENV
+})
 exports.main = async (event, context) => {
   var task = []
   if(event.from_comment){
