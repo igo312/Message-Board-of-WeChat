@@ -131,8 +131,9 @@ async function login(cWindow){
         success (res){
           console.log("login Part")
           if (res.authSetting['scope.userInfo']){
-            wx.getUserInfo({
+            wx.getUserProfile({
               //getUserInfo的回调函数，调用了cloud.callFunction
+              desc: '登录',
               success: function (res){
                 const userinfo = res.userInfo;
                 cWindow.setData({
